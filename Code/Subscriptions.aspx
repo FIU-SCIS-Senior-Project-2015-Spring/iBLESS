@@ -41,6 +41,9 @@
 				    <li id="CreateUser">
 					    <a href="/CreateUsers.aspx">Create User</a>
 				    </li>
+                    <li>
+					    <a href="/CreateTable.aspx">Create Hierarchy</a>
+				    </li>
                     <li class="pull-right" style="cursor:pointer">
                         <a onclick="deleteCookies()">Log out</a>
                     </li>
@@ -98,7 +101,7 @@
     <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.js" type="text/javascript"></script>
     <script src="//ajax.aspnetcdn.com/ajax/jQuery.validate/1.11.1/jquery.validate.js" type="text/javascript"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-    <script src="UtilityScript.js"></script>
+    <script src="UtilityScript.js?ver=2"></script>
 
     <script>
         $("#CreateUser").hide();
@@ -172,13 +175,11 @@
         }
 
         $(document).ready(function () {
+            eraseSession();
             GetUserName();
-
-            var parameter = { ID: "sa" }
 
             $.ajax({
                 type: "POST",
-                data: JSON.stringify(parameter),
                 url: "Subscriptions.aspx/IsSubscribed",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",

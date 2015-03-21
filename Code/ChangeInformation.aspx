@@ -41,6 +41,9 @@
 				    <li id="CreateUser">
 					    <a href="/CreateUsers.aspx">Create User</a>
 				    </li>
+                    <li>
+					    <a href="/CreateTable.aspx">Create Hierarchy</a>
+				    </li>
                     <li class="pull-right" style="cursor:pointer">
                         <a onclick="deleteCookies()">Log out</a>
                     </li>
@@ -93,7 +96,7 @@
                 </div>
                  <hr/>
 
-	            <button class="btn btn-primary btn-md" type="button" onclick="updateInformation()"><span class="glyphicon glyphicon-send"></span> Submit</button>
+	            <button class="btn btn-primary btn-md" type="submit"><span class="glyphicon glyphicon-send"></span> Submit</button>
                 <p><br/></p>
             </div>
         </div>
@@ -106,9 +109,11 @@
     <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.js" type="text/javascript"></script>
     <script src="//ajax.aspnetcdn.com/ajax/jQuery.validate/1.11.1/jquery.validate.js" type="text/javascript"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-    <script src="UtilityScript.js"></script>
+    <script src="UtilityScript.js?ver=2"></script>
 
     <script>
+        $("form").submit(function () { updateInformation(); return false; } )
+
         function oldAndNewPresent() {
             var boolean = ($("#newPass").val() === "" || $("#oldPass").val() !== "") && ($("#oldPass").val() === "" || $("#newPass").val() !== "");
 
@@ -156,6 +161,7 @@
         }
 
         $(document).ready(function () {
+            eraseSession();
             GetUserName();
             $("body").fadeIn("slow");
         })

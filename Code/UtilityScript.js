@@ -31,3 +31,24 @@ function getCookie(cname) {
     }
     return "";
 }
+
+function eraseSession ()
+{
+    sessionStorage.clear();
+}
+
+function setUpParents(data) {
+    for (i = 0 ; i < data.length ; i++)
+        $("#parents").append("<option value=\"" + data[i].ID + "\">" + data[i].ID + "</option>");
+}
+
+function setUpParents(data, ID) {
+    for (i = 0 ; i < data.length ; i++)
+        if (data[i].ID !== ID)
+            $("#parents").append("<option value=\"" + data[i].ID + "\">" + data[i].ID + "</option>");
+}
+
+function setUpDropDown(data) {
+    for (i = 0 ; i < data.length ; i++)
+        $("#roles").append("<option value=\"" + data[i].ID + "\">" + data[i].Type + "</option>")
+}

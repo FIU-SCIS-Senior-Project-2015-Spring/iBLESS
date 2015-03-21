@@ -58,14 +58,15 @@
     </div>
 </body>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.js" type="text/javascript"></script>
     <script src="//ajax.aspnetcdn.com/ajax/jQuery.validate/1.11.1/jquery.validate.js" type="text/javascript"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-
+    <script src="UtilityScript.js?ver=2"></script>
+    
 <script>
     $("form").validate({
 
@@ -105,13 +106,15 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (response) {
-                if (response.d === true)
-                    window.location.href = '/Login.aspx';
+                if (response.d === true){
+                    $("#alert").remove();
+                    $("#workspace").prepend('<div class="alert alert-success" id="alert"><a class="close" data-dismiss="alert">&times;</a><strong>Success!</strong> E-mail successfully sent! Going back to login...</div>');
+                    setTimeout(function () { window.location.href = '/Login.aspx'; }, 3000);
+                }  
                 else
                 {
-                    if (!$("#alert").length) {
-                        $("#workspace").prepend('<div class="alert alert-danger alert-error" id="alert"><a class="close" data-dismiss="alert">&times;</a><strong>Error!</strong> A problem has been occurred while submitting your data.</div>');
-                    }
+                    $("#alert").remove();
+                    $("#workspace").prepend('<div class="alert alert-danger alert-error" id="alert"><a class="close" data-dismiss="alert">&times;</a><strong>Error!</strong> A problem has occurred while submitting your data.</div>');
                 }
             },
             failure: function (response) {

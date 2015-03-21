@@ -30,6 +30,9 @@ namespace WebApplication1
         [WebMethod]
         public static int MakeSubscription (String Company, String Address, String Type, int Subs)
         {
+            if (Database.GetBossID(Subscription.GetID().ToString()) != -2)
+                return -1;
+
             string subscription = "";
             string myConnectionString;
             string date = DateTime.Now.ToString("M/d/yyyy");
@@ -50,7 +53,7 @@ namespace WebApplication1
                 {
                     conn.ConnectionString = myConnectionString;
 
-                    string commandText = @"INSERT INTO Companies(ID,Name,Date,Time,Address,Type,Subscription) VALUES (@ID,@Name,@Date,@Time,@Address,@Type,@Subscription)";
+                    string commandText = @"REPLACE INTO Companies SET ID=@ID, Name=@Name, Date=@Date, Time=@Time, Address=@Address, Type=@Type, Subscription=@Subscription";
                     MySqlCommand cmd = new MySqlCommand(commandText, conn);
 
                     cmd.Parameters.AddWithValue("@ID", id);

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CreateUsers.aspx.cs" Inherits="WebApplication1.CreateUsers" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ModifyInfo.aspx.cs" Inherits="WebApplication1.ModifyInfo" %>
 
 <!DOCTYPE html>
 
@@ -49,30 +49,8 @@
                     </li>
 			    </ul>
                 <br />
-                <div class="bs-example" id="tableDiv">
-                    <table class="table table-hover" id="table">
-                        <thead>
-                            <tr>
-                                <th>Row</th>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>E-mail</th>
-                                <th>Parent</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
                  <hr/>
-                <div id="AddNew" hidden="hidden">
-                <label for="userName">Username:</label>
-                <div class="form-group">
-                <div class="icon-addon addon-lg">
-                    <input data-msg-required="Required!" data-rule-required="true" type="text" placeholder="User Name" class="form-control" id="userName" name="userName" />
-                    <label for="userName" class="glyphicon glyphicon-briefcase"></label>
-                </div>
-                </div>
+                <div id="AddNew">
                 <label for="firstName">First Name:</label>
                 <div class="form-group">
                 <div class="icon-addon addon-lg">
@@ -80,7 +58,6 @@
                     <label for="firstName" class="glyphicon glyphicon-briefcase"></label>
                 </div>
                 </div>
-                <p></p>
                 <label for="lastName">Last Name:</label>
                 <div class="form-group">
                 <div class="icon-addon addon-lg">
@@ -88,6 +65,7 @@
                     <label for="lastName" class="glyphicon glyphicon-briefcase"></label>
                 </div>
                 </div>
+                <p></p>
                 <label for="email">E-mail:</label>
                 <div class="form-group">
                 <div class="icon-addon addon-lg">
@@ -95,7 +73,6 @@
                     <label for="email" class="glyphicon glyphicon-briefcase"></label>
                 </div>
                 </div>
-                <p></p>
                 <label for="phone">Phone:</label>
                 <div class="form-group">
                 <div class="icon-addon addon-lg">
@@ -103,6 +80,7 @@
                     <label for="phone" class="glyphicon glyphicon-briefcase"></label>
                 </div>
                 </div>
+                <p></p>
                 <label for="employeeID">Employee ID:</label>
                 <div class="form-group">
                 <div class="icon-addon addon-lg">
@@ -110,12 +88,19 @@
                     <label for="employeeID" class="glyphicon glyphicon-briefcase"></label>
                 </div>
                 </div>
-                <p></p>
                 <label for="location">City:</label>
                 <div class="form-group">
                 <div class="icon-addon addon-lg">
                     <input data-msg-required="Required!" data-rule-required="true" type="text" placeholder="Location" class="form-control" id="location" name="location" />
                     <label for="location" class="glyphicon glyphicon-briefcase"></label>
+                </div>
+                </div>
+                <p></p>
+                <label for="title">Job Title:</label>
+                <div class="form-group">
+                <div class="icon-addon addon-lg">
+                    <input data-msg-required="Required!" data-rule-required="true" type="text" placeholder="Title" class="form-control" id="title" name="title" />
+                    <label for="title" class="glyphicon glyphicon-briefcase"></label>
                 </div>
                 </div>
                 <label for="state">State:</label>
@@ -178,14 +163,6 @@
                 </div>
                 </div>
                 <p></p>
-                <label for="title">Job Title:</label>
-                <div class="form-group">
-                <div class="icon-addon addon-lg">
-                    <input data-msg-required="Required!" data-rule-required="true" type="text" placeholder="Title" class="form-control" id="title" name="title" />
-                    <label for="title" class="glyphicon glyphicon-briefcase"></label>
-                </div>
-                </div>
-                <p></p>
                 <label for="roles">User Type:</label>
                 <div class="form-group">
                 <div class="icon-addon addon-lg">
@@ -223,136 +200,101 @@
     <script src="UtilityScript.js?ver=2"></script>
 
     <script>
-        function HasBoss ()
-        {
-            $.ajax({
-                type: "POST",
-                url: "CreateUsers.aspx/HasBoss",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    if (response.d === true)
-                    {
-                        GetHierarchy();
-                        GetParents();
-                        PopulateTable();
-                    }
-                    else
-                        window.location.href = "/UserManagement.aspx"
-                },
-                failure: function (response) {
-                    alert(response.d);
-                }
-            })
-
-        }
-
-        function GetHierarchy ()
-        {
-            $.ajax({
-                type: "POST",
-                url: "CreateUsers.aspx/GetHierarchy",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    if (response.d !== " ") {
-                        setUpDropDown(JSON.parse(response.d).result);
-                        $("#AddNew").show();
-                    }
-                    else {
-                        $("#tableDiv").remove();
-                        $("#workspace").append('<div class="alert alert-danger alert-error" id="alert"><a>&times;</a><strong>Error!</strong> There is no User Hierarchy Created!.</div>');
-                    }
-
-                    $("body").fadeIn("slow");
-                },
-                failure: function (response) {
-                    alert(response.d);
-                }
-            })
-        }
-
-        function GetParents ()
-        {
-            $.ajax({
-                type: "POST",
-                url: "CreateUsers.aspx/GetParents",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    setUpParents(JSON.parse(response.d).result)
-                },
-                failure: function (response) {
-                    alert(response.d);
-                }
-            })
-        }
-
-        function PopulateTable ()
-        {
-            $.ajax({
-                type: "POST",
-                url: "CreateUsers.aspx/PopulateTable",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    CreateTable(JSON.parse(response.d).result)
-                },
-                failure: function (response) {
-                    alert(response.d);
-                }
-            })
-        }
-
         $(document).ready(function () {
-            eraseSession();
-            GetUserName();
-            HasBoss();
+            
+            var parameter = { ID: sessionStorage.getItem("ID") };
+            var shouldShow = true;
+
+            $.ajax({
+                type: "POST",
+                url: "ModifyInfo.aspx/GetRolesInfo",
+                data: JSON.stringify(parameter),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.d !== " ")
+                        setUpDropDown(JSON.parse(response.d).result);
+                    else
+                        shouldShow = false;
+                },
+                failure: function (response) {
+                    alert(response.d);
+                }
+            })
+
+            $.ajax({
+                type: "POST",
+                url: "ModifyInfo.aspx/GetParentsInfo",
+                data: JSON.stringify(parameter),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.d !== " ")
+                        setUpParents(JSON.parse(response.d).result, sessionStorage.getItem("ID"));
+                    else
+                        shouldShow = false;
+                },
+                failure: function (response) {
+                    alert(response.d);
+                }
+            })
+
+            $.ajax({
+                type: "POST",
+                url: "ModifyInfo.aspx/GetInfo",
+                data: JSON.stringify(parameter),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.d !== " ")
+                        populateFields(JSON.parse(response.d));
+                    else
+                        shouldShow = false;
+
+                    if (shouldShow)
+                        $("body").fadeIn("slow");
+                    else
+                        window.location.href = "/UserManagement.aspx";
+                },
+                failure: function (response) {
+                    alert(response.d);
+                }
+            })
         })
 
-        function CreateTable(data) {
-            $("#table").append("<tbody>");
-
-            for (i = 0, j = 0 ; i < data.length ; i++) {
-                if (data[i].ID === getCookie("ID"))
-                    continue;
-
-                $("#table").append("<tr><td>" + ++j + "</td><td>" + data[i].Name + "</td><td>" + data[i].Type + "</td>" + "</td><td>" + data[i].Email + "</td>" + "</td><td>" + data[i].Parent + "</td>" +
-                    "<td><button type='button' class='btn btn-primary' onclick=\"Delete(" + data[i].ID + ")\">Delete</button>" +
-                    "<button type='button' class='btn btn-primary' onclick=\"Modify(" + data[i].ID + ")\">Modify Info</button>" + 
-                    "<button type='button' class='btn btn-primary' onclick=\"ActivateToggle(" + data[i].ID + ")\" id=\"activeButton" + data[i].ID + "\">" + (data[i].IsInactive === "True" ? "Inactive" : "Active") + "</button></td></tr>");
-            }
-
-            $("#table").append("</tbody>");
+        function populateFields(data)
+        {
+            $("#firstName").val(data.FirstName);
+            $("#lastName").val(data.LastName);
+            $("#email").val(data.Email);
+            $("#phone").val(data.Phone);
+            $("#employeeID").val(data.EmployeeID);
+            $("#location").val(data.City);
+            $("#state").val(data.State);
+            $("#title").val(data.Title);
+            $("#roles").val(data.Type);
+            $("#parents").val(data.Parent);
         }
 
-        function ActivateToggle (ID)
-        {
-            var id = { UserID: ID }
+        function ValidatePhone() {
+            var phone = $("#phone").val();
 
-            $.ajax({
-                type: "POST",
-                url: "CreateUsers.aspx/ActivateToggle",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(id),
-                dataType: "json",
-                success: function (response) {
-                    $("#activeButton" + ID).text(response.d === true ? "Inactive" : "Active");
-                },
-                faliure: function (response) {
+            if (phone.length != 10)
+                return false;
 
-                }
-            })
+            for (i = 0 ; i < 10 ; i++)
+                if (!phone[i].match(/[0-9]/i))
+                    return false;
+
+            return true;
         }
 
-        function Modify (ID)
-        {
-            sessionStorage.setItem("ID", ID);
-            window.location.href = "ModifyInfo.aspx";
+        function InvalidPhone() {
+            $("#phone").tooltip("destroy").data("title", "Invalid Telephone Number").addClass("error").tooltip();
         }
 
         $("form").validate({
-            
+
             showErrors: function (errorMap, errorList) {
 
                 // Clean up any tooltips for valid elements
@@ -383,63 +325,34 @@
             }
         });
 
-        function InvalidPhone()
-        {
-            $("#phone").tooltip("destroy").data("title", "Invalid Telephone Number").addClass("error").tooltip();
-        }
-
-        function ValidatePhone ()
-        {
-            var phone = $("#phone").val();
-
-            if (phone.length != 10)
-                return false;
-
-            for (i = 0 ; i < 10 ; i++)
-                if (!phone[i].match(/[0-9]/i))
-                    return false;
-
-            return true;
-        }
-
-        function Delete(id) {
-            console.log(id);
-            var parameter = { ID: id }
-
-            $.ajax({
-                type: "POST",
-                data: JSON.stringify(parameter),
-                url: "CreateUsers.aspx/Delete",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    if (response.d === true)
-                        window.location.href = "/CreateUsers.aspx"
-                },
-                failure: function (response) {
-
-                }
-            })
-        }
-
         function submit() {
             var parameter = {
-                Username: $("#userName").val(), FirstName: $("#firstName").val(), LastName: $("#lastName").val(), Email: $("#email").val(), Type: $("#roles").val(), Parent: ($("#parents").val() === "-1" ? null : $("#parents").val()),
-                Phone: $("#phone").val(), EmployeeID: $("#employeeID").val(), City: $("#location").val(), State: $("#state").val(), Title: $("#title").val()}
+                ID: sessionStorage.getItem("ID"), FirstName: $("#firstName").val(), LastName: $("#lastName").val(), Email: $("#email").val(), Type: $("#roles").val(), Parent: ($("#parents").val() === "-1" ? null : $("#parents").val()),
+                Phone: $("#phone").val(), EmployeeID: $("#employeeID").val(), City: $("#location").val(), State: $("#state").val(), Title: $("#title").val()
+            }
 
             $.ajax({
                 type: "POST",
                 data: JSON.stringify(parameter),
-                url: "CreateUsers.aspx/CreateUser",
+                url: "ModifyInfo.aspx/UpdateInfo",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (response) {
-                    if (response.d !== "") {
+                    if (response.d === -1)
+                    {
                         $("#alert").remove();
-                        $("#workspace").prepend('<div class="alert alert-danger alert-error" id="alert"><a class="close" data-dismiss="alert">&times;</a><strong>Error!</strong> There was a problem with: "' + response.d + '"</div>');
+                        $("#workspace").prepend('<div class="alert alert-danger alert-error" id="alert"><a class="close" data-dismiss="alert">&times;</a><strong>Error!</strong>The E-mail already exists! Change E-mail!</div>');
+                    }
+                    else if (response.d === -2)
+                    {
+                        $("#alert").remove();
+                        $("#workspace").prepend('<div class="alert alert-danger alert-error" id="alert"><a class="close" data-dismiss="alert">&times;</a><strong>Error!</strong>The phone number or employee ID already exists!</div>');
                     }
                     else
-                        window.location.href = "/CreateUsers.aspx"
+                    {
+                        $("#alert").remove();
+                        $("#workspace").prepend('<div class="alert alert-success" id="alert"><a class="close" data-dismiss="alert">&times;</a><strong>Success!</strong>The changes have been changed successfully!</div>');
+                    }
                 },
                 failure: function (response) {
                     alert(response.d);

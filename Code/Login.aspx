@@ -24,7 +24,7 @@
   </style>
 
   <body style="background:#eee">
-    
+    <form>
     <div class="container">
     		<p><br/></p>
   		<div class="row">
@@ -38,7 +38,7 @@
     								<label for="exampleInputEmail1">Username</label>
     								<div class="input-group">
   									<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-  									<input type="email" class="form-control" id="email" placeholder="Enter username">
+  									<input type="text" class="form-control" id="email" placeholder="Enter username">
 								</div>
   							</div>
   							<div class="form-group">
@@ -53,7 +53,7 @@
                             <a href="/Registration.aspx">Not a user?</a><a href="Forgot.aspx"> Forgot your password?</a>
                             <br />
                             <br />
-  							<button type="button" class="btn btn-primary" onclick="validate()"><span class="glyphicon glyphicon-lock"></span> Login</button>
+  							<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-lock"></span> Login</button>
   							<p><br/></p>
   					</div>
 				</div>
@@ -61,13 +61,15 @@
 			<div class="col-md-8"></div>
 		</div>
     </div>
-
+    </form>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
     <script>
+        $("form").submit(function () { validate(); return false; })
+
         function validate ()
         {
             if ($("#email").val() != "" && $("#password").val() != "")
@@ -93,11 +95,16 @@
                  contentType: "application/json; charset=utf-8",
                  dataType: "json",
                  success: function (response) {
-                     if (response.d === true)
+                     if (response.d === 0)
                          window.location.href = '/UserManagement.aspx';
-                     else
+                     else if (response.d === 1)
                      {
                          $("#InfoError").text("Wrong Username or Password!");
+                         $("#InfoError").show();
+                     }
+                     else
+                     {
+                         $("#InfoError").text("User is inactive!");
                          $("#InfoError").show();
                      }
                  },

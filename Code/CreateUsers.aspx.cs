@@ -18,6 +18,12 @@ namespace WebApplication1
         }
 
         [WebMethod]
+        public static bool ActivateToggle (String UserID)
+        {
+            return Database.ActiveToggle(UserID);
+        }
+
+        [WebMethod]
         public static String PopulateTable ()
         {
             String result = "";
@@ -33,7 +39,7 @@ namespace WebApplication1
                     conn.ConnectionString = myConnectionString;
                     conn.Open();
 
-                    string stm = @"SELECT FirstName, LastName, `E-mail`, " + UserID + "_Arch.Type, Parent, " + UserID + "_Users.ID From User INNER JOIN " + UserID + "_Users ON User.CustomerNumber=" + UserID + "_Users.ID INNER JOIN " + UserID + "_Arch ON " +
+                    string stm = @"SELECT FirstName, LastName, `E-mail`, " + UserID + "_Arch.Type, Parent, " + UserID + "_Users.ID, IsInactive From User INNER JOIN " + UserID + "_Users ON User.CustomerNumber=" + UserID + "_Users.ID INNER JOIN " + UserID + "_Arch ON " +
                         UserID + "_Arch.ID=" + UserID + "_Users.Type";
 
                     MySqlCommand cmd = new MySqlCommand(stm, conn);
@@ -130,7 +136,8 @@ namespace WebApplication1
                 result += "\"Type\":" + "\"" + rdr.GetString(3) + "\", ";
                 result += "\"ID\":" + "\"" + rdr.GetInt32(5) + "\", ";
                 result += "\"Email\":" + "\"" + rdr.GetString(2) + "\", ";
-                result += "\"Parent\":" + "\"" + (rdr["Parent"] == DBNull.Value ? "No Parent" : rdr["Parent"]) + "\"},";
+                result += "\"Parent\":" + "\"" + (rdr["Parent"] == DBNull.Value ? "No Parent" : rdr["Parent"]) + "\", ";
+                result += "\"IsInactive\":" + "\"" + rdr["IsInactive"] + "\"},";
             }
 
             result = result.Substring(0, result.Length - 1);
@@ -142,137 +149,21 @@ namespace WebApplication1
         [WebMethod]
         public static String GetHierarchy ()
         {
-            Create();
+            Database.CreateUsersTable(Subscription.GetID());
             return CreateTable.GetReadyTable(false);
         }
 
         [WebMethod]
         public static String GetParents ()
         {
-            String result = "";
-            int UserID = Subscription.GetBossID();
-
-            string myConnectionString = "server=ibless.cx7whwbxrpt3.us-east-1.rds.amazonaws.com;uid=iBLESS_Trac;" +
-                "pwd=marjaime1;database=iBLESS;";
-
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection())
-                {
-                    conn.ConnectionString = myConnectionString;
-                    conn.Open();
-
-                    string stm = @"SELECT ID FROM " + UserID + "_Users";
-
-                    MySqlCommand cmd = new MySqlCommand(stm, conn);
-
-                    using (MySqlDataReader rdr = cmd.ExecuteReader())
-                        if (!CreateJSON_IDS(ref result, rdr))
-                            return " ";
-                }
-            }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
-                Debug.WriteLine(ex.Message);
-                return " ";
-            }
-
-            return result;
-        }
-
-        private static bool CreateJSON_IDS (ref String result, MySqlDataReader rdr)
-        {
-            result = "{\"result\": [";
-            bool infoInside = false;
-
-            while (rdr.Read())
-            {
-                infoInside = true;
-                result += "{\"ID\":" + "\"" + rdr.GetString(0) + "\"},";
-            }
-
-            result = result.Substring(0, result.Length - 1);
-            result += "]}";
-
-            return infoInside;
+            return Database.GetParentsJSON(Subscription.GetID().ToString());
         }
 
         [WebMethod]
-        public static int CreateUser (String Username, String FirstName, String LastName, String Email, String Type, String Parent)
+        public static String CreateUser (String Username, String FirstName, String LastName, String Email, String Type, String Parent, String Phone, String EmployeeID, String City, String State, String Title)
         {
-            int UserID = Subscription.GetBossID();
-
-            if (!Registration.RegisterCreateUser(Email, Forgot.GetPassword(), Username, FirstName, LastName, UserID))
-                return -1;
-
-            string myConnectionString = "server=ibless.cx7whwbxrpt3.us-east-1.rds.amazonaws.com;uid=iBLESS_Trac;" +
-                                 "pwd=marjaime1;database=iBLESS;";
-
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection())
-                {
-                    conn.ConnectionString = myConnectionString;
-
-                    string commandText = @"INSERT INTO " + UserID + "_Users(ID,Type,Parent,CreatedBy,Date,Time) VALUES (@id,@type,@parent,@by,@date,@time)";
-                    MySqlCommand cmd = new MySqlCommand(commandText, conn);
-
-                    cmd.Parameters.AddWithValue("@id", GetID(Username));
-                    cmd.Parameters.AddWithValue("@type", Type);
-                    cmd.Parameters.AddWithValue("@parent", Parent);
-                    cmd.Parameters.AddWithValue("@by", UserID);
-                    cmd.Parameters.AddWithValue("@date", DateTime.Now.ToString("M/d/yyyy"));
-                    cmd.Parameters.AddWithValue("@time", DateTime.Now.ToString("h:mm:ss tt"));
-
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                }
-            }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
-                Debug.WriteLine(ex.Message);
-                return -1;
-            }
-
-            return 0;
-        }
-
-        private static int GetID (String Username)
-        {
-            int ID;
-            string myConnectionString = "server=ibless.cx7whwbxrpt3.us-east-1.rds.amazonaws.com;uid=iBLESS_Trac;" +
-                "pwd=marjaime1;database=iBLESS;";;
-
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection())
-                {
-                    conn.ConnectionString = myConnectionString;
-                    conn.Open();
-
-                    string stm = @"SELECT CustomerNumber From User WHERE UserName=@Name";
-
-                    MySqlCommand cmd = new MySqlCommand(stm, conn);
-                    cmd.Parameters.AddWithValue("@Name", Username);
-                    using (MySqlDataReader rdr = cmd.ExecuteReader())
-                    {
-                        rdr.Read();
-
-                        if (!rdr.HasRows)
-                            return -2;
-
-                        ID = rdr.GetInt32(0);
-                    }
-                }
-            }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
-                Debug.WriteLine(ex.Message);
-                return -1;
-            }
-
-            return ID;
-        }
+            return Database.CreateUser(Username, FirstName, LastName, Email, Type, Parent, Phone, EmployeeID, City, State, Title);
+        }   
 
         [WebMethod]
         public static bool HasBoss ()
@@ -295,34 +186,6 @@ namespace WebApplication1
 
             if (CanCreate.Equals("false"))
                 return false;
-
-            return true;
-        }
-
-        private static bool Create()
-        {
-            int UserID = Subscription.GetBossID();
-
-            string myConnectionString = "server=ibless.cx7whwbxrpt3.us-east-1.rds.amazonaws.com;uid=iBLESS_Trac;" +
-                                 "pwd=marjaime1;database=iBLESS;";
-
-            try
-            {
-                using (MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection())
-                {
-                    conn.ConnectionString = myConnectionString;
-                    String commandText = "CREATE TABLE IF NOT EXISTS " + UserID + "_Users (ID int NOT NULL,Type int, Parent int, CreatedBy int, Date char(100), Time char(100),PRIMARY KEY (ID))";
-                    MySqlCommand cmd = new MySqlCommand(commandText, conn);
-
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                }
-            }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
-                Debug.WriteLine(ex.Message);
-                return false;
-            }
 
             return true;
         }

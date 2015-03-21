@@ -31,6 +31,9 @@
 				    <li id="CreateUser">
 					    <a href="/CreateUsers.aspx">Create User</a>
 				    </li>
+                    <li class="active">
+					    <a href="/CreateTable.aspx">Create Hierarchy</a>
+				    </li>
                     <li class="pull-right" style="cursor:pointer">
                         <a onclick="deleteCookies()">Log out</a>
                     </li>
@@ -85,7 +88,7 @@
     <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.js" type="text/javascript"></script>
     <script src="//ajax.aspnetcdn.com/ajax/jQuery.validate/1.11.1/jquery.validate.js" type="text/javascript"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-    <script src="UtilityScript.js"></script>
+    <script src="UtilityScript.js?ver=2"></script>
 
     <script>
         var id = 0;
@@ -103,7 +106,7 @@
                 var type = data[i].Type;
 
                 $("#table").append("<tr><td>" + (i + 1) + "</td><td>" + data[i].ID + "</td><td>" + type + "</td><td>" + data[i].Can_Create + "</td>" +
-                    "<td><button type='button' class='btn btn-primary' onclick=\"Insert(" + data[i].ID + ")\">Insert</button><button type='button' class='btn btn-primary' onclick=\"Delete('" + type + "')\">Delete</button></td></tr>");
+                    "<td><button type='button' class='btn btn-primary' onclick=\"Insert(" + data[i].ID + ")\">Insert</button><button type='button' class='btn btn-primary' onclick=\"Delete('" + type + "', " + data[i].ID + ")\">Delete</button></td></tr>");
             }
 
             $("#table").append("</tbody>");
@@ -116,9 +119,9 @@
             $("#AddNew").show();
         }
 
-        function Delete (type)
+        function Delete (type, typeID)
         {
-            var parameter = { Type: type }
+            var parameter = { Type: type, TypeID: typeID }
 
             $.ajax({
                 type: "POST",
@@ -136,7 +139,8 @@
                     else
                     {
                         id = 0;
-                        Insert(id)
+                        Insert(id);
+                        jsonData = undefined;
                     }
                 },
                 failure: function (response) {
@@ -198,7 +202,7 @@
                 }
             })
         }
-
+        
         function typeDuplicated ()
         {
             for (i = 0 ; i < jsonData.length ; i++)
@@ -233,6 +237,8 @@
 
         $(document).ready(function ()
         {
+            $("*").attr("disabled", "disabled");
+            eraseSession();
             GetUserName();
             CheckSubscription();
         })
@@ -256,6 +262,7 @@
                         $("#AddNew").show();
                     }
 
+                    $("*").attr("disabled", false);
                     $("body").fadeIn("slow");
                 },
                 failure: function (response) {

@@ -81,8 +81,9 @@ namespace WebApplication1
             {
                 Debug.WriteLine(ex.Message);
                 return " ";
-            }    
+            }
 
+            GetUsers(row_ID);
             result = GetReadyTable(false);
             return result;
         }
@@ -111,6 +112,73 @@ namespace WebApplication1
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool GetUsers (int row_ID)
+        {
+            int ID = Subscription.GetID();
+            string myConnectionString = "server=ibless.cx7whwbxrpt3.us-east-1.rds.amazonaws.com;uid=iBLESS_Trac;" +
+                                 "pwd=marjaime1;database=iBLESS;";
+
+            try
+            {
+                using (MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection())
+                {
+                    conn.ConnectionString = myConnectionString;
+                    conn.Open();
+
+                    string stm = @"Select Type, ID FROM " + ID + "_Users WHERE Type>@id ORDER BY Type DESC";
+
+                    MySqlCommand cmd = new MySqlCommand(stm, conn);
+                    cmd.Parameters.AddWithValue("@id", row_ID);
+
+                    using (MySqlDataReader rdr = cmd.ExecuteReader())
+                        IncrementResultsUsers(rdr, ID);
+                }
+            }
+            catch (MySql.Data.MySqlClient.MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool IncrementResultsUsers (MySqlDataReader rdr, int ID)
+        {
+            string myConnectionString = "server=ibless.cx7whwbxrpt3.us-east-1.rds.amazonaws.com;uid=iBLESS_Trac;" +
+                                 "pwd=marjaime1;database=iBLESS;";
+
+            try
+            {
+                using (MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection())
+                {
+                    conn.ConnectionString = myConnectionString;
+
+                    while (rdr.Read())
+                    {
+                        string commandText = "UPDATE " + ID + "_Users SET `Type`=@id WHERE ID=@currentID";
+                        MySqlCommand cmd = new MySqlCommand(commandText, conn);
+
+                        int RowID = rdr.GetInt32(0);
+                        Debug.WriteLine(RowID);
+                        cmd.Parameters.AddWithValue("@id", RowID + 1);
+                        cmd.Parameters.AddWithValue("@currentID", rdr.GetString(1));
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+                    }
+                }
+            }
+            catch (MySql.Data.MySqlClient.MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
                 return false;
             }
 
@@ -156,7 +224,7 @@ namespace WebApplication1
         }
 
         [WebMethod]
-        public static String Delete (String Type)
+        public static String Delete (String Type, int TypeID)
         {
             int ID = Subscription.GetID();
             string myConnectionString = "server=ibless.cx7whwbxrpt3.us-east-1.rds.amazonaws.com;uid=iBLESS_Trac;" +
@@ -183,8 +251,52 @@ namespace WebApplication1
                 return " ";
             }
 
+            DeleteFromUsers (TypeID, ID);
             result = GetReadyTable(false);
             return result;
+        }
+
+        private static bool DeleteFromUsers (int TypeID, int ID)
+        {
+            string myConnectionString = "server=ibless.cx7whwbxrpt3.us-east-1.rds.amazonaws.com;uid=iBLESS_Trac;" +
+                                 "pwd=marjaime1;database=iBLESS;";
+
+            try
+            {
+                using (MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection())
+                {
+                    conn.ConnectionString = myConnectionString;
+                    conn.Open();
+
+                    string stm = @"SELECT ID FROM " + ID + "_Users WHERE Type=@type";
+
+                    MySqlCommand cmd = new MySqlCommand(stm, conn);
+                    cmd.Parameters.AddWithValue("@type", TypeID);
+
+                    using (MySqlDataReader rdr = cmd.ExecuteReader())
+                        while (rdr.Read())
+                            CreateUsers.Delete(rdr.GetInt32(0).ToString());
+                }
+
+                using (MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection())
+                {
+                    conn.ConnectionString = myConnectionString;
+                    conn.Open();
+
+                    string stm = @"DELETE FROM " + ID + "_Users WHERE Type=@type";
+
+                    MySqlCommand cmd = new MySqlCommand(stm, conn);
+                    cmd.Parameters.AddWithValue("@type", TypeID);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (MySql.Data.MySqlClient.MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
+
+            return true;
         }
 
         [WebMethod]

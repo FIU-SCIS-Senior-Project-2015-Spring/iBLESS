@@ -54,7 +54,7 @@ namespace WebApplication1
             return true;
         }
 
-        public static bool UpdateBossID(int ID)
+        private static bool UpdateBossID(int ID)
         {
             string myConnectionString = "server=ibless.cx7whwbxrpt3.us-east-1.rds.amazonaws.com;uid=iBLESS_Trac;" +
                                  "pwd=marjaime1;database=iBLESS;";
