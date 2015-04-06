@@ -21,7 +21,18 @@ namespace WebApplication1
         [WebMethod]
         public static int Validate(String Email, String Password)
         {
-            return Database.Validate(Email, Password);
+            int response = Database.Validate(Email, Password);
+
+            if (response == 0)
+            {
+                int id = Database.GetID(Email);
+
+                Subscription.CreateCookie("MyTestCookie", Email);
+                Subscription.CreateCookie("ID", id.ToString());
+                Database.SetCanCreateCookie(Email);
+            }
+
+            return response;
         }
     }
 }

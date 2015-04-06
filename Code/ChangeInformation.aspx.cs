@@ -21,12 +21,19 @@ namespace WebApplication1
         public static int UpdateInformation(string FirstName, string LastName, string OldPassword, string NewPassword)
         {
             string UserName;
-            string myConnectionString = "server=ibless.cx7whwbxrpt3.us-east-1.rds.amazonaws.com;uid=iBLESS_Trac;" +
-                                 "pwd=marjaime1;database=iBLESS;";
-            string hashedPassword = "";
+
 
             try { UserName = Subscription.GetCookieValue("MyTestCookie"); }
             catch (HttpException ex) { return -1; }
+
+            return UpdateInformationHelper(UserName, FirstName, LastName, OldPassword, NewPassword);
+        }
+
+        public static int UpdateInformationHelper (String UserName, String FirstName, String LastName, String OldPassword, String NewPassword)
+        {
+            string myConnectionString = "server=ibless.cx7whwbxrpt3.us-east-1.rds.amazonaws.com;uid=iBLESS_Trac;" +
+                     "pwd=marjaime1;database=iBLESS;";
+            string hashedPassword = "";
 
             try
             {
@@ -35,10 +42,12 @@ namespace WebApplication1
                     conn.ConnectionString = myConnectionString;
                     conn.Open();
 
-                    string stm = @"SELECT Password, Guid From User WHERE UserName=@Name";
+                    string stm = @"SELECT Password, Guid From User WHERE (`E-mail`=@mail OR UserName=@username)";
 
                     MySqlCommand cmd = new MySqlCommand(stm, conn);
-                    cmd.Parameters.AddWithValue("@Name", UserName);
+                    cmd.Parameters.AddWithValue("@username", UserName);
+                    cmd.Parameters.AddWithValue("@mail", UserName);
+
                     using (MySqlDataReader rdr = cmd.ExecuteReader())
                     {
                         rdr.Read();
@@ -50,7 +59,7 @@ namespace WebApplication1
                     }
 
                     string commandText = "UPDATE User SET " + (NewPassword == "" ? "" : "Password=@password, Guid=@guid, ") + (FirstName == "" ? "" : "FirstName=@firstName, ") + (LastName == "" ? "" : "LastName=@lastName, ");
-                    commandText = commandText.Substring(0, commandText.Length - 2) + " WHERE `UserName`=@username";
+                    commandText = commandText.Substring(0, commandText.Length - 2) + " WHERE (`E-mail`=@mail OR UserName=@username)";
                     cmd = new MySqlCommand(commandText, conn);
                     Guid userGuid = System.Guid.NewGuid();
 
@@ -62,6 +71,7 @@ namespace WebApplication1
                     cmd.Parameters.AddWithValue("@firstName", FirstName);
                     cmd.Parameters.AddWithValue("@lastName", LastName);
                     cmd.Parameters.AddWithValue("@guid", userGuid);
+                    cmd.Parameters.AddWithValue("@mail", UserName);
 
                     cmd.ExecuteNonQuery();
                 }

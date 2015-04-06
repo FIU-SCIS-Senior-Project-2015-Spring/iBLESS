@@ -1,88 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.Services;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.Text;
 using System.Diagnostics;
 
 namespace WebApplication1
 {
-    /// <summary>
-    /// Summary description for PhoneServices
-    /// </summary>
-    [WebService(Namespace = "http://tempuri.org/")]
-    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
-    [System.ComponentModel.ToolboxItem(false)]
-    // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
-    [System.Web.Script.Services.ScriptService]
-    public class PhoneServices : System.Web.Services.WebService
+    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
+    // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
+    public class Service1 : PhoneServicesWCF
     {
+        private const int OSHA = 90;
         public Boolean shouldSend = false;
 
-        [WebMethod]
+        public String Login(String Username, String Password)
+        {
+            if (Database.Validate(Username, Password) != 0)
+                return "Error";
+
+            return Database.GetTotalInformationJSON(Database.GetID(Username).ToString());
+        }
+
+        public bool ForgotPassword(String Email)
+        {
+            return Database.SendMail(Email);
+        }
+
+        public bool RegisterUser(String Username, String Firstname, String Lastname, String Email, String Password)
+        {
+            return Database.RegisterUser(Email, Firstname, Lastname, Password, Username);
+        }
+
         public String RegisterSPL(String UserID, double SPL, String GPS, String Weather, double Windspeed, int Winddirection)
         {
             int BossID = Database.GetBossID(UserID);
             string phone;
             string message;
 
-            if (WindDirection.WindDoesNotExist(Winddirection))
-                return "Error: Wind direction does not exist!";
-
-            if (BossID <= -1)
-                return "Error: User is not registered under any company!";
+            if (WindDirection.WindDoesNotExist(Winddirection) || BossID <= -1)
+                return "Error";
 
             try { phone = Database.GetManagerPhone(UserID); }
-            catch (FormatException ex) { return "Error: Database unavailable!"; }
+            catch (FormatException ex) { return "Error"; }
 
             message = "User " + UserID + " has exceeded the safe level of dBa; caution is advised. User Information:\n\n" + Database.GetUserInformation(UserID);
 
             Database.RecordSPL(UserID, BossID, SPL, GPS, Weather, ref shouldSend, Windspeed, Winddirection);
 
-            int companySPL = Database.GetSPL_Type(BossID);
-
-            if (companySPL >= 0 && SPL > companySPL)
-            {
+            if (SPL > OSHA)
                 SendToPhone(phone, message);
 
-                if (shouldSend)
-                    SendToPhone(phone, "User " + UserID + " has continued to stay in location: " + GPS);
-            }
+            if (shouldSend)
+                SendToPhone(phone, "User " + UserID + " has continued to stay in location: " + GPS);
 
             return Database.GetVibrationBasedOnSPL(BossID, SPL);
         }
 
-        [WebMethod]
-        public bool ForgotPassword (String Email)
-        {
-            return Database.SendMail(Email);
-        }
-
-        [WebMethod]
-        public int ResetPassword (String Username, String OldPassword, String NewPassword)
-        {
-            return ChangeInformation.UpdateInformationHelper(Username, "", "", OldPassword, NewPassword);
-        }
-
-        [WebMethod]
-        public bool RegisterUser (String Username, String Firstname, String Lastname, String Email, String Password)
-        {
-            return Database.RegisterUser(Email, Firstname, Lastname, Password, Username);
-        }
-
-        [WebMethod]
-        public void SetBLEInformation(String UserID, int IMEI, int MSISDN, int IMSI, String MAC)
-        {
-            int BossID = Database.GetBossID(UserID);
-
-            if (BossID <= -1)
-                return;
-
-            Database.SetBLEInformation(UserID, BossID, IMEI, MSISDN, IMSI, MAC);
-        }
-
-        [WebMethod]
-        public void SetPhoneInformation (String UserID, int IMEI, int MSISDN, int IMSI, String MAC, String Brand, String PhoneNumber, String PhoneModel,  String Carrier, String PhoneIP)
+        public void SetPhoneInformation(String UserID, int IMEI, int MSISDN, int IMSI, String MAC, String Brand, String PhoneNumber, String PhoneModel, String Carrier, String PhoneIP)
         {
             int BossID = Database.GetBossID(UserID);
 
@@ -92,19 +68,17 @@ namespace WebApplication1
             Database.SetPhoneInformation(UserID, BossID, IMEI, MSISDN, IMSI, MAC, Brand, PhoneNumber, PhoneModel, Carrier, PhoneIP);
         }
 
-        [WebMethod]
-        public String Login (String Username, String Password)
+        public void SetBLEInformation (String UserID, int IMEI, int MSISDN, int IMSI, String MAC)
         {
-            String errorMessage = "";
+            int BossID = Database.GetBossID(UserID);
 
-            if (Database.ValidateWS(Username, Password, ref errorMessage) != 0)
-                return errorMessage;
+            if (BossID <= -1)
+                return;
 
-            return Database.GetTotalInformationJSON(Database.GetID(Username).ToString());
+            Database.SetBLEInformation(UserID, BossID, IMEI, MSISDN, IMSI, MAC);
         }
 
-        [WebMethod]
-        public void BLEDeviceDisconnected (String UserID)
+        public void BLEDeviceDisconnected(String UserID)
         {
             int BossID = Database.GetBossID(UserID);
             string phone;
@@ -122,7 +96,6 @@ namespace WebApplication1
             Database.LogBLEStatus(UserID, BossID, false);
         }
 
-        [WebMethod]
         public void BLEDeviceConnected(String UserID)
         {
             int BossID = Database.GetBossID(UserID);
@@ -141,8 +114,7 @@ namespace WebApplication1
             Database.LogBLEStatus(UserID, BossID, true);
         }
 
-        [WebMethod]
-        public void ExcessiveSessions (String UserID)
+        public void ExcessiveSessions(String UserID)
         {
             int BossID = Database.GetBossID(UserID);
             string phone;
@@ -157,8 +129,7 @@ namespace WebApplication1
             SendToPhone(phone, message);
         }
 
-        [WebMethod]
-        public void LogError (String UserID, int ErrorID, String GPS, String Weather)
+        public void LogError(String UserID, int ErrorID, String GPS, String Weather)
         {
             int BossID = Database.GetBossID(UserID);
 
@@ -168,8 +139,7 @@ namespace WebApplication1
             Database.LogError(UserID, BossID, ErrorID, GPS, Weather);
         }
 
-        [WebMethod]
-        public void LogNotification (String UserID, String GPS, String Weather, String CellID, String AccessoryStatus, String VibrationSource, String VibrationEffect, int TimeVibrated, String Accelerometer, bool InGeofence)
+        public void LogNotification(String UserID, String GPS, String Weather, String CellID, String AccessoryStatus, String VibrationSource, String VibrationEffect, int TimeVibrated, String Accelerometer, bool InGeofence)
         {
             int BossID = Database.GetBossID(UserID);
 
@@ -179,7 +149,7 @@ namespace WebApplication1
             Database.LogNotification(UserID, BossID, GPS, Weather, CellID, AccessoryStatus, VibrationSource, VibrationEffect, TimeVibrated, Accelerometer, InGeofence);
         }
 
-        private void SendToPhone(String Phone, String Message)
+        public static void SendToPhone(String Phone, String Message)
         {
             string[] carriers = { "@tmomail.net", "@vtext.com", "@txt.att.net", "@messaging.sprintpcs.com", "@email.uscc.net" };
 

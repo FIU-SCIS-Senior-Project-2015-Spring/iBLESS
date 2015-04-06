@@ -4,6 +4,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 
@@ -31,7 +34,7 @@
   					<div class="panel-body">
                             
     						<div class="page-header">
-  							<h3>Forgot User</h3>
+  							<h3>Forgot Password</h3>
 						    </div>
                             <p><b>An e-mail will be sent to your e-mail with instructions on how to recover your password.</b></p>
                             <form>
@@ -108,8 +111,8 @@
             success: function (response) {
                 if (response.d === true){
                     $("#alert").remove();
-                    $("#workspace").prepend('<div class="alert alert-success" id="alert"><a class="close" data-dismiss="alert">&times;</a><strong>Success!</strong> E-mail successfully sent! Going back to login...</div>');
-                    setTimeout(function () { window.location.href = '/Login.aspx'; }, 3000);
+                    $("#workspace").prepend('<div class="alert alert-success" id="alert"><a class="close" data-dismiss="alert">&times;</a><strong>Success!</strong> E-mail successfully sent with instructions on how to recover your password! Going back to login...</div>');
+                    setTimeout(function () { window.location.href = '/Login.aspx'; }, 5000);
                 }  
                 else
                 {

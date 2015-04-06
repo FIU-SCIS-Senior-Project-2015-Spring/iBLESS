@@ -37,6 +37,12 @@
                     <li>
 					    <a href="/CreateTable.aspx">Create Hierarchy</a>
 				    </li>
+                    <li>
+					    <a href="/VibrationPattern.aspx">Select Vibration</a>
+				    </li>
+                    <li>
+                        <a href="/CheckSPL.aspx">Check SPL Values</a>
+                    </li>
                     <li class="pull-right" style="cursor:pointer">
                         <a onclick="deleteCookies()">Log out</a>
                     </li>
@@ -90,7 +96,7 @@
                         $("#workspace").append('<div style="display:inline" id="div' + i + '"><label for="' + key + '">' + key + ':</label><p style="display:inline"> </p><pre style="display:inline">' + data[key] + '</pre></div>');
                     if (i % 2 === 1) {
                         $("#workspace").append('<div style="display:inline" id="div' + i + '"><label for="' + key + '" id="label' + i + '">' + key + ':</label><p style="display:inline"> </p><pre style="display:inline">' + data[key] + '</pre></div>');
-                        $("#label" + i).width(300 - $("#div" + i).width());
+                        $("#label" + i).width(100);
                         $("#div" + (i - 1)).css("margin-right", 500 - $("#div" + (i - 1)).width());
                     }
 

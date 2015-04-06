@@ -44,6 +44,12 @@
                     <li>
 					    <a href="/CreateTable.aspx">Create Hierarchy</a>
 				    </li>
+                    <li>
+					    <a href="/VibrationPattern.aspx">Select Vibration</a>
+				    </li>
+                    <li>
+                        <a href="/CheckSPL.aspx">Check SPL Values</a>
+                    </li>
                     <li class="pull-right" style="cursor:pointer">
                         <a onclick="deleteCookies()">Log out</a>
                     </li>
@@ -85,6 +91,18 @@
                 </div>  
                 </div>
                 <label id="cost"><b>$30.00</b></label>
+                <p></p>
+                <br />
+                <label for="splType">SPL Type:</label>
+                <div class="form-group">
+                <div class="icon-addon addon-lg">
+                    <select class="form-control" id="splType">
+                      <option value="OSHA">OSHA</option>
+                      <option value="NIOSH">NIOSH</option>
+                    </select>
+                    <label for="splType" class="glyphicon glyphicon-ok"></label>
+                </div>  
+                </div>
                  <hr/>
 
 	            <button class="btn btn-primary btn-md" type="submit"><span class="glyphicon glyphicon-send"></span> Submit</button>
@@ -153,7 +171,7 @@
         });
 
         function submit() {
-            var parameter = { Company: $("#companyName").val(), Address: $("#address").val(), Type: $("#type").val(), Subs: $("#subscription").val() };
+            var parameter = { Company: $("#companyName").val(), Address: $("#address").val(), Type: $("#type").val(), Subs: $("#subscription").val(), SPL_Type: $("#splType").val() };
 
             $.ajax({
                 type: "POST",

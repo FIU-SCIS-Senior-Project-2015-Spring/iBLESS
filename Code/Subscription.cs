@@ -98,10 +98,11 @@ namespace WebApplication1
                     conn.ConnectionString = myConnectionString;
                     conn.Open();
 
-                    string stm = @"SELECT CustomerNumber From User WHERE UserName=@Name";
+                    string stm = @"SELECT CustomerNumber From User WHERE (`E-mail`=@mail OR UserName=@Name)";
 
                     MySqlCommand cmd = new MySqlCommand(stm, conn);
                     cmd.Parameters.AddWithValue("@Name", UserName);
+                    cmd.Parameters.AddWithValue("@mail", UserName);
                     using (MySqlDataReader rdr = cmd.ExecuteReader())
                     {
                         rdr.Read();
@@ -139,10 +140,11 @@ namespace WebApplication1
                     conn.ConnectionString = myConnectionString;
                     conn.Open();
 
-                    string stm = @"SELECT BossID From User WHERE UserName=@Name";
+                    string stm = @"SELECT BossID From User WHERE (`E-mail`=@mail OR UserName=@Name)";
 
                     MySqlCommand cmd = new MySqlCommand(stm, conn);
                     cmd.Parameters.AddWithValue("@Name", UserName);
+                    cmd.Parameters.AddWithValue("@mail", UserName);
                     using (MySqlDataReader rdr = cmd.ExecuteReader())
                     {
                         rdr.Read();

@@ -30,7 +30,7 @@
     		<p><br/></p>
   		<div class="row">
             <div class="col-md-4"></div>
-  			<div class="col-md-4">
+  			<div class="col-md-4" id ="workspace">
   				<div class="panel panel-default">
   					<div class="panel-body">
     					<div class="page-header">
@@ -141,9 +141,16 @@
                  dataType: "json",
                  success: function (response) {
                      if (response.d === false)
-                         alert("Error creating account!");
+                     {
+                         $("#alert").remove();
+                         $("#workspace").prepend('<div class="alert alert-danger alert-error" id="alert"><a class="close" data-dismiss="alert">&times;</a><strong>Error!</strong> A problem has occurred while submitting your data.</div>');
+                     }
                      else
-                         window.location.href = '/Login.aspx';
+                     {
+                         $("#alert").remove();
+                         $("#workspace").prepend('<div class="alert alert-success" id="alert"><a class="close" data-dismiss="alert">&times;</a><strong>Success!</strong> Account successfully created! Redirecting to Login...</div>');
+                         setTimeout(function () { window.location.href = '/Login.aspx'; }, 3000);
+                     }
                  },
                  failure: function (response) {
                      alert(response.d);

@@ -34,6 +34,12 @@
                     <li class="active">
 					    <a href="/CreateTable.aspx">Create Hierarchy</a>
 				    </li>
+                    <li>
+					    <a href="/VibrationPattern.aspx">Select Vibration</a>
+				    </li>
+                    <li>
+                        <a href="/CheckSPL.aspx">Check SPL Values</a>
+                    </li>
                     <li class="pull-right" style="cursor:pointer">
                         <a onclick="deleteCookies()">Log out</a>
                     </li>

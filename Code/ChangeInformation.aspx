@@ -4,6 +4,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ChangeInformation</title>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
     <link href="ChangeInfoCSS.css" rel="stylesheet" type="text/css" />
@@ -44,6 +47,12 @@
                     <li>
 					    <a href="/CreateTable.aspx">Create Hierarchy</a>
 				    </li>
+                    <li>
+					    <a href="/VibrationPattern.aspx">Select Vibration</a>
+				    </li>
+                    <li>
+                        <a href="/CheckSPL.aspx">Check SPL Values</a>
+                    </li>
                     <li class="pull-right" style="cursor:pointer">
                         <a onclick="deleteCookies()">Log out</a>
                     </li>

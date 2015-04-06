@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
 using System.Web.Services;
+using System.Diagnostics;
 
 namespace WebApplication1
 {
@@ -17,9 +18,15 @@ namespace WebApplication1
         }
 
         [WebMethod]
-        public static bool ChangeUserPassword(string Email, string Code)
+        public static bool ValidateCode (string Email, string Code)
         {
-            return Database.ChangeUserPassword(Email, Code);
+            return Database.ValidateCode(Email, Code);
+        }
+
+        [WebMethod]
+        public static bool ChangeUserPassword (string Email, string Password)
+        {
+            return Database.ChangeUserPassword(Email, Password);
         }
     }
 }

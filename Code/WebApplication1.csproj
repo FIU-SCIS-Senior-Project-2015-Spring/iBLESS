@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,6 +48,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -68,6 +72,7 @@
     <Content Include="ChangeInfoCSS.css" />
     <Content Include="ChangeInformation.aspx" />
     <Content Include="ChangePassword.aspx" />
+    <Content Include="CheckSPL.aspx" />
     <Content Include="CreateTable.aspx" />
     <Content Include="CreateUsers.aspx" />
     <Content Include="FinishSubscription.aspx" />
@@ -90,9 +95,11 @@
     <Content Include="Login.aspx" />
     <Content Include="PhoneServices.asmx" />
     <Content Include="Registration.aspx" />
+    <Content Include="PhoneServicesWCF.svc" />
     <Content Include="Subscriptions.aspx" />
     <Content Include="UserManagement.aspx" />
     <Content Include="UtilityScript.js" />
+    <Content Include="VibrationPattern.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +116,13 @@
     </Compile>
     <Compile Include="ChangePassword.aspx.designer.cs">
       <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CheckSPL.aspx.cs">
+      <DependentUpon>CheckSPL.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CheckSPL.aspx.designer.cs">
+      <DependentUpon>CheckSPL.aspx</DependentUpon>
     </Compile>
     <Compile Include="CreateTable.aspx.cs">
       <DependentUpon>CreateTable.aspx</DependentUpon>
@@ -140,6 +154,7 @@
     <Compile Include="Forgot.aspx.designer.cs">
       <DependentUpon>Forgot.aspx</DependentUpon>
     </Compile>
+    <Compile Include="PhoneServicesWCF.cs" />
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -172,6 +187,10 @@
     <Compile Include="Registration.aspx.designer.cs">
       <DependentUpon>Registration.aspx</DependentUpon>
     </Compile>
+    <Compile Include="PhoneServicesWCF.svc.cs">
+      <DependentUpon>PhoneServicesWCF.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SPL.cs" />
     <Compile Include="Subscription.cs" />
     <Compile Include="Subscriptions.aspx.cs">
       <DependentUpon>Subscriptions.aspx</DependentUpon>
@@ -187,6 +206,15 @@
     <Compile Include="UserManagement.aspx.designer.cs">
       <DependentUpon>UserManagement.aspx</DependentUpon>
     </Compile>
+    <Compile Include="VibrationPattern.aspx.cs">
+      <DependentUpon>VibrationPattern.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VibrationPattern.aspx.designer.cs">
+      <DependentUpon>VibrationPattern.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Vibrations.cs" />
+    <Compile Include="WindDirection.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

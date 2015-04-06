@@ -28,7 +28,7 @@ namespace WebApplication1
         }
 
         [WebMethod]
-        public static int MakeSubscription (String Company, String Address, String Type, int Subs)
+        public static int MakeSubscription (String Company, String Address, String Type, int Subs, String SPL_Type)
         {
             if (Database.GetBossID(Subscription.GetID().ToString()) != -2)
                 return -1;
@@ -53,7 +53,7 @@ namespace WebApplication1
                 {
                     conn.ConnectionString = myConnectionString;
 
-                    string commandText = @"REPLACE INTO Companies SET ID=@ID, Name=@Name, Date=@Date, Time=@Time, Address=@Address, Type=@Type, Subscription=@Subscription";
+                    string commandText = @"REPLACE INTO Companies SET ID=@ID, Name=@Name, Date=@Date, Time=@Time, Address=@Address, Type=@Type, Subscription=@Subscription, `SPL_Type`=@splType";
                     MySqlCommand cmd = new MySqlCommand(commandText, conn);
 
                     cmd.Parameters.AddWithValue("@ID", id);
@@ -63,6 +63,7 @@ namespace WebApplication1
                     cmd.Parameters.AddWithValue("@Address", Address);
                     cmd.Parameters.AddWithValue("@Type", Type);
                     cmd.Parameters.AddWithValue("@Subscription", subscription);
+                    cmd.Parameters.AddWithValue("@splType", SPL_Type);
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
