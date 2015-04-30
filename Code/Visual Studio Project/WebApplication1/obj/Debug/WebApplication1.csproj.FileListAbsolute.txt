@@ -1,9 +1,0 @@
-c:\users\satrofu\documents\visual studio 2013\Projects\WebApplication1\WebApplication1\bin\WebApplication1.dll.config
-c:\users\satrofu\documents\visual studio 2013\Projects\WebApplication1\WebApplication1\bin\WebApplication1.dll
-c:\users\satrofu\documents\visual studio 2013\Projects\WebApplication1\WebApplication1\bin\WebApplication1.pdb
-c:\users\satrofu\documents\visual studio 2013\Projects\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojResolveAssemblyReference.cache
-c:\users\satrofu\documents\visual studio 2013\Projects\WebApplication1\WebApplication1\obj\Debug\WebApplication1.dll
-c:\users\satrofu\documents\visual studio 2013\Projects\WebApplication1\WebApplication1\obj\Debug\WebApplication1.pdb
-C:\Users\Satrofu\Documents\Visual Studio 2013\Projects\WebApplication1\WebApplication1\bin\Newtonsoft.Json.dll
-C:\Users\Satrofu\Documents\Visual Studio 2013\Projects\WebApplication1\WebApplication1\bin\Newtonsoft.Json.xml
-C:\Users\Satrofu\Documents\Visual Studio 2013\Projects\WebApplication1\WebApplication1\bin\MySql.Data.dll

@@ -1,7 +1,0 @@
-C:\Users\Satrofu\Documents\Visual Studio 2013\Projects\WebApplication1\WebApplication1\bin\WebApplication1.dll.config
-C:\Users\Satrofu\Documents\Visual Studio 2013\Projects\WebApplication1\WebApplication1\bin\WebApplication1.dll
-C:\Users\Satrofu\Documents\Visual Studio 2013\Projects\WebApplication1\WebApplication1\bin\WebApplication1.pdb
-C:\Users\Satrofu\Documents\Visual Studio 2013\Projects\WebApplication1\WebApplication1\bin\MySql.Data.dll
-C:\Users\Satrofu\Documents\Visual Studio 2013\Projects\WebApplication1\WebApplication1\obj\Release\WebApplication1.csprojResolveAssemblyReference.cache
-C:\Users\Satrofu\Documents\Visual Studio 2013\Projects\WebApplication1\WebApplication1\obj\Release\WebApplication1.dll
-C:\Users\Satrofu\Documents\Visual Studio 2013\Projects\WebApplication1\WebApplication1\obj\Release\WebApplication1.pdb
