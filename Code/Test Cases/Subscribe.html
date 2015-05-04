@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://ec2-52-0-155-150.compute-1.amazonaws.com/" />
+<title>Subscribe</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Subscribe</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/Login.aspx</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=email</td>
+	<td>Rarara</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>Rarara</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=button.btn.ibless-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Subscription</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=companyName</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=address</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=type</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=webLink</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=tagLine</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=description</td>
+	<td>1111</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=subscription</td>
+	<td>javascript{var random = Math.floor(Math.random() * 4); if (random === 0) { &quot;Bronze&quot;; } else if (random === 1) { &quot;Silver&quot;; } else if (random === 2) { &quot;Gold&quot;; } else { &quot;Black&quot;; }}</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=updateButton</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=subscription_payment_profile_attributes_first_name</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=subscription_payment_profile_attributes_last_name</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=subscription_payment_profile_attributes_full_number</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=subscription_payment_profile_attributes_expiration_month</td>
+	<td>label=4 - Apr</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=subscription_payment_profile_attributes_expiration_year</td>
+	<td>label=2018</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=subscription_payment_profile_attributes_billing_address</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=subscription_payment_profile_attributes_billing_state</td>
+	<td>label=Arkansas</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=subscription_payment_profile_attributes_billing_zip</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=subscription_payment_profile_attributes_billing_city</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=subscription_customer_attributes_first_name</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=subscription_customer_attributes_last_name</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=subscription_customer_attributes_email</td>
+	<td>1@gmail.com</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=subscription_submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>4000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=welcome</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
