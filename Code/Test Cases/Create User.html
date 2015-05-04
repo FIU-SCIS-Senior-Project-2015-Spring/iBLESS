@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://ec2-52-0-155-150.compute-1.amazonaws.com/" />
+<title>Create User</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Create User</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/Login.aspx</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=email</td>
+	<td>Selenium</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=password</td>
+	<td>pan1potito</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=button.btn.ibless-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Create User</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>1000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//button[@type='button'])[7]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>1000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=userName</td>
+	<td>javascript{&quot;joe+&quot; + Math.floor(Math.random()*11111);}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=employeeID</td>
+	<td>javascript{Math.floor(Math.random()*11111);}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=firstName</td>
+	<td>dsadasd</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=lastName</td>
+	<td>dsadas</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=email</td>
+	<td>javascript{&quot;joe+&quot; + Math.floor(Math.random()*11111) + &quot;@gmail.com&quot;;}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=phone</td>
+	<td>javascript{&quot;&quot; + Math.floor(Math.random()*10) + Math.floor(Math.random()*10) + Math.floor(Math.random()*10) + Math.floor(Math.random()*10) + Math.floor(Math.random()*10) + Math.floor(Math.random()*10) + Math.floor(Math.random()*10) + Math.floor(Math.random()*10) + Math.floor(Math.random()*10) + Math.floor(Math.random()*10);}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=location</td>
+	<td>Miami</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=title</td>
+	<td>f</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>id=roles</td>
+	<td>label=joe+8467</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=button.bootbox-close-button.close</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=welcome</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

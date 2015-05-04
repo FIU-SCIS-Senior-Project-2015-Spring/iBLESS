@@ -1,0 +1,1 @@
+The sequence diagrams are stored inside RD\Dynamic
